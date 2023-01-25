@@ -41,7 +41,7 @@ layout: section
 
 ## Things we use
 
-- [Angular](https://angular.io/docs) - read the docs about components and servies
+- [Angular](https://angular.io/docs) - read the docs about components and services
 - [ngBootstrap](https://ng-bootstrap.github.io/#/home) - component library built on bootstraps
   <span class="text-gray-500 italic">look here for bugs</span>🐞
 - [ngx-charts](https://swimlane.gitbook.io/ngx-charts/) - chart library
@@ -93,15 +93,15 @@ flowchart LR
 # Server
 
 ## Core libraries
-- [Spring](https://spring.io/) - dependency injection
-- [Spring Boot](https://spring.io/projects/spring-boot) - integrate libraries with Spring
-- [Liquibase](https://www.liquibase.org/) - database migrations
+- [Spring](https://spring.io/) - Dependency injection
+- [Spring Boot](https://spring.io/projects/spring-boot) - Integrate libraries with Spring
+- [Liquibase](https://www.liquibase.org/) - Database migrations
 
 ## Distributed system
 
-- [Hazelcast](https://hazelcast.com/) - distributed data structures
+- [Hazelcast](https://hazelcast.com/) - Distributed data structures
 - [ActiveMQ Artemis](https://activemq.apache.org/components/artemis/) - WebSocket broker
-- [JHipster Registry](https://www.jhipster.tech/jhipster-registry/) - service discovery
+- [JHipster Registry](https://www.jhipster.tech/jhipster-registry/) - Service discovery
 
 --- 
 
@@ -121,7 +121,7 @@ public class Feedback extends DomainObject {
 }
 ```
 
-- Annotatins specify tables names, conditions (min/max length), etc.
+- Annotations specify tables names, conditions (min/max length), etc.
 - You have to add new columns etc to the database using `Liquibase`
 
 ---
@@ -139,8 +139,8 @@ public class Feedback extends DomainObject {
 ```
 
 ### Why?
-- prevent irreversible database modifications
-- prepare database changes that can be reviewed
+- Prevent irreversible database modifications
+- Prepare database changes that can be reviewed
 
 ### Gradle commands
 - **liquibaseClearChecksums**: Artemis server does not start with ...liquibase error
@@ -195,7 +195,7 @@ Used in repositories
 - [Athena](https://github.com/ls1intum/Athena)
 
 
-We use [Profiles](https://www.baeldung.com/spring-profiles) to select correct implementation at server start
+We use [profiles](https://www.baeldung.com/spring-profiles) to select correct implementation at server start
 
 ```java
 @Service
