@@ -3,6 +3,7 @@ theme: apple-basic
 highlighter: shiki
 lineNumbers: true
 info: Artemis onboarding
+download: true
 drawings:
   persist: false
 layout: intro-image
