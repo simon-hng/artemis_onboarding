@@ -22,7 +22,8 @@ image: "https://cdn.wallpapersafari.com/39/83/NAgCyb.jpg"
 - **Client** - libraries and technologies we use, internal dataflow
 - **Server** - architecture technologies and how to use them
 - **Scenario: Creating a text exercise** - apply what we learned
-- **Tips and tricks** - save time and work more efficient
+- **Tips** - save time and work more efficient
+- **Organization** - information to become an active part of the community
 
 ---
 layout: section
@@ -34,19 +35,23 @@ layout: section
 
 # Client
 
-## Things we use and save us time
+## Libraries and frameworks
 
-- [Typescript](https://www.typescriptlang.org/) - really use types if applicable
-- [Bootstrap](https://getbootstrap.com/) - use predefined styles if you're unsure
-- [jest](https://jestjs.io/) - testing framework
-
-## Things we use
-
+### General
 - [Angular](https://angular.io/docs) - read the docs about components and services
+- [Typescript](https://www.typescriptlang.org/) - really use types if applicable
+
+### Styling
+- [Bootstrap](https://getbootstrap.com/) - use predefined styles if you're unsure
 - [ngBootstrap](https://ng-bootstrap.github.io/#/home) - component library built on bootstraps
   <span class="text-gray-500 italic">look here for bugs</span>🐞
 - [ngx-charts](https://swimlane.gitbook.io/ngx-charts/) - chart library
-  <span class="text-gray-500 italic">look here for frustration</span>
+  <span class="text-gray-500 italic">limited functionality. Chart calculations need to be done manually</span>
+
+### Testing
+- [Jest](https://jestjs.io/) - testing framework. Mostly unit tests
+- [Cypress](https://www.cypress.io/) - e2e testing in a simulated Browser environment
+- [Angular test](https://angular.io/guide/testing-components-basics)
 
 ---
 
@@ -54,10 +59,15 @@ layout: section
 
 ## Data flow
 
+In an ideal data flow, the user interacts with the HTML, which calls functions in `*.component.ts` e.g. value checks
+and then propagates the calls to a service for more complicated calculations.
+
 ```mermaid
 flowchart LR
   *.component.html --> *.component.ts --> *.service.ts
 ```
+
+### Example: user starts exercise
 
 - user clicks on `start exercise` button
 - in `exercise-details-student-actions.component.html`: event is registered and sent to
@@ -87,7 +97,7 @@ flowchart LR
 - Client accesses REST endpoints in web layer
 - Web layer passes request to application layer, where more complicated logic happens
 - Application layer uses data layer (database) and other systems to enable its functionality
-- WebSockets for two-way communication
+- [WebSockets](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket) for two-way communication
 
 ---
 
@@ -221,16 +231,17 @@ layout: section
 # Tips - tools
 
 ## Browser
-- Console
-- Sources
-- Network
+- Console - Run any JS code
+- Sources - Your typescript files and debugging options
+- Network - Rest calls, Web socket connections
 - [Angular DevTools extension](https://chrome.google.com/webstore/detail/angular-devtools/ienfalfjdbdpebioblfackkekamfmbnh)
 
 ## IntelliJ Idea
-- Database
-- Endpoints
-- Pull requests
-- Find usages, references, implementation
+- [Database](https://www.jetbrains.com/help/idea/database-tool-window.html) - See and edit database entries
+- [Endpoints](https://www.jetbrains.com/help/idea/endpoints-tool-window.html) - List of all REST endpoints of your server
+- [Pull requests](https://www.jetbrains.com/help/idea/work-with-github-pull-requests.html#incoming_pull_requests) - Review PRs with IDE features
+- [Find usages](https://www.jetbrains.com/help/idea/find-highlight-usages.html)
+- [Code navigation](https://www.jetbrains.com/help/idea/navigating-through-the-source-code.html) - Go to definition, declaration, etc
 
 ---
 
@@ -242,13 +253,13 @@ layout: section
 - [Angular services](https://angular.io/guide/architecture-services)
 - [Angular dependency injection](https://angular.io/guide/dependency-injection)
 - [Client theming](https://docs.artemis.cit.tum.de/dev/guidelines/client-design/) - describes colors only
-- [Artemis client guidelines](https://docs.artemis.cit.tum.de/dev/guidelines/client/)
+- [Artemis client guidelines](https://docs.artemis.cit.tum.de/dev/guidelines/client/) - code style guidelines
 
 ## Things you shouldn't do
 
-- Components do too much; too little use of services
-- Lack of abstraction - a lot of duplicated code
-- [Prop drilling](https://blog.logrocket.com/solving-prop-drilling-react-apps/) - again because we don't use services
+- Large components - split your code across multiple components and services
+- Lack of abstraction - start thinking about abstractions, interfaces etc. and then about concrete implementations
+- [Prop drilling](https://blog.logrocket.com/solving-prop-drilling-react-apps/) - use services if your components have to many `@input`s
 
 ---
 
@@ -258,7 +269,7 @@ layout: section
 
 - [Artemis server guidelines](https://docs.artemis.cit.tum.de/dev/guidelines/server/)
 - [Artemis server testing](https://docs.artemis.cit.tum.de/dev/guidelines/server/#assert-using-the-most-specific-overload-method)
-- [Permission checks](https://docs.artemis.cit.tum.de/dev/guidelines/server/#rest-endpoint-best-practices-for-authorization) - Both role and indiviual resource
+- [Permission checks](https://docs.artemis.cit.tum.de/dev/guidelines/server/#rest-endpoint-best-practices-for-authorization) - both role and individual resource
 
 
 ## Things you shouldn't do
@@ -284,3 +295,14 @@ layout: section
 - Get approval before deploying database changes - really messy to clean it up otherwise
 - [Deployment via Bamboo](https://confluence.ase.in.tum.de/display/ArTEMiS/Deploying+changes+to+test+server)
 - Reach out to responsible contact for config changes
+
+---
+
+# Organization
+
+- Take part in the weekly developer meetings
+- Take part in testing sessions to get reviews and test approvals
+- Organize and manage your own time. You're responsible for your own success
+- Have fun :D
+
+
