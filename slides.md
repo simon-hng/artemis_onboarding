@@ -42,7 +42,7 @@ layout: section
 
 ## Things we use
 
-- [Angular](https://angular.io/docs) - read the docs about components and servies
+- [Angular](https://angular.io/docs) - read the docs about components and services
 - [ngBootstrap](https://ng-bootstrap.github.io/#/home) - component library built on bootstraps
   <span class="text-gray-500 italic">look here for bugs</span>🐞
 - [ngx-charts](https://swimlane.gitbook.io/ngx-charts/) - chart library
@@ -79,12 +79,32 @@ image: 'assets/ServerArchitecture.png'
 # Server
 
 ## Architecture
+```mermaid
+flowchart LR
+  Resource --> Service --> Repository
+```
 
 - Client accesses REST endpoints in web layer
 - Web layer passes request to application layer, where more complicated logic happens
 - Application layer uses data layer (database) and other systems to enable its functionality
+- WebSockets for two-way communication
 
 ---
+
+# Server
+
+## Core libraries
+- [Spring](https://spring.io/) - Dependency injection
+- [Spring Boot](https://spring.io/projects/spring-boot) - Integrate libraries with Spring
+- [Liquibase](https://www.liquibase.org/) - Database migrations
+
+## Distributed system
+
+- [Hazelcast](https://hazelcast.com/) - Distributed data structures
+- [ActiveMQ Artemis](https://activemq.apache.org/components/artemis/) - WebSocket broker
+- [JHipster Registry](https://www.jhipster.tech/jhipster-registry/) - Service discovery
+
+--- 
 
 # Server
 
@@ -102,8 +122,8 @@ public class Feedback extends DomainObject {
 }
 ```
 
-- By adding annotations we generate the tables, columns, etc to save our objects.
-- Just add the annotations and the next time you start the server the database changes happen
+- Annotations specify tables names, conditions (min/max length), etc.
+- You have to add new columns etc to the database using `Liquibase`
 
 ---
 
@@ -111,9 +131,17 @@ public class Feedback extends DomainObject {
 
 ## Liquibase
 
+```xml
+<addColumn tableName="exam">
+    <column name="example_solution_publication_date" type="datetime">
+        <constraints nullable="true"/>
+    </column>
+</addColumn>
+```
+
 ### Why?
-- prevent irreversible database modifications
-- prepare databse changes that can be reviewed
+- Prevent irreversible database modifications
+- Prepare database changes that can be reviewed
 
 ### Gradle commands
 - **liquibaseClearChecksums**: Artemis server does not start with ...liquibase error
@@ -121,11 +149,14 @@ public class Feedback extends DomainObject {
 
 Changelogs are loaded from `src/main/resources/config/liquibase/master.xml`
 
+[Artemis migration documentation](https://docs.artemis.cit.tum.de/dev/migration/)
+
 ---
 
 # Server
 
 ## SQL queries
+Used in repositories
 
 ### Writing actual SQL
 
@@ -139,11 +170,38 @@ Changelogs are loaded from `src/main/resources/config/liquibase/master.xml`
     Set<Exercise> findByCourseIdWithCategories(@Param("courseId") Long courseId);
 ```
 
-### [Data derived queries](https://www.baeldung.com/spring-data-derived-queries)
+### [Derived queries](https://www.baeldung.com/spring-data-derived-queries)
 
 ```java
     Optional<TemplateProgrammingExerciseParticipation>
     findWithEagerResultsAndSubmissionsByProgrammingExerciseId(Long exerciseId);
+```
+
+
+---
+
+# Server
+
+## External systems
+
+### Programming exercises
+- [Atlassian stack (Bitbucket, Bamboo)](https://docs.artemis.cit.tum.de/dev/setup/#bamboo-bitbucket-and-jira-setup)
+- [Gitlab, Jenkins](https://docs.artemis.cit.tum.de/dev/setup/#jenkins-and-gitlab-setup)
+- [Gitlab, Gitlab CI](https://docs.artemis.cit.tum.de/dev/setup/#gitlab-ci-and-gitlab-setup)
+
+### User Management
+- [Jira](https://docs.artemis.cit.tum.de/dev/setup/#bamboo-bitbucket-and-jira-setup)
+
+### Text exercises
+- [Athena](https://github.com/ls1intum/Athena)
+
+
+We use [profiles](https://www.baeldung.com/spring-profiles) to select correct implementation at server start
+
+```java
+@Service
+@Profile("bitbucket")
+public class BitbucketService extends AbstractVersionControlService {
 ```
 
 ---
@@ -186,7 +244,7 @@ layout: section
 - [Client theming](https://docs.artemis.cit.tum.de/dev/guidelines/client-design/) - describes colors only
 - [Artemis client guidelines](https://docs.artemis.cit.tum.de/dev/guidelines/client/)
 
-## Thing you shouldn't do
+## Things you shouldn't do
 
 - Components do too much; too little use of services
 - Lack of abstraction - a lot of duplicated code
@@ -196,4 +254,33 @@ layout: section
 
 # Tips - server
 
-- Also add permission checks here
+## Guidelines
+
+- [Artemis server guidelines](https://docs.artemis.cit.tum.de/dev/guidelines/server/)
+- [Artemis server testing](https://docs.artemis.cit.tum.de/dev/guidelines/server/#assert-using-the-most-specific-overload-method)
+- [Permission checks](https://docs.artemis.cit.tum.de/dev/guidelines/server/#rest-endpoint-best-practices-for-authorization) - Both role and indiviual resource
+
+
+## Things you shouldn't do
+
+- Use normal Maps/List to store data - we run a distributed system
+- Circular dependencies between services - you might have to extract logic
+- SQL queries that load many related objects - they have to fit in memory
+
+---
+
+# Tips - testing changes
+
+## Local environment
+
+- Feel free to do whatever you want - you have to clean it up if you mess up
+- [Setup guides for external systems](https://docs.artemis.cit.tum.de/dev/setup/#)
+
+
+## Testing environments
+
+- [Set of test servers with different external systems](https://confluence.ase.in.tum.de/pages/viewpage.action?pageId=25252245)
+- Coordinate via Slack channel `#artemis-testserver`
+- Get approval before deploying database changes - really messy to clean it up otherwise
+- [Deployment via Bamboo](https://confluence.ase.in.tum.de/display/ArTEMiS/Deploying+changes+to+test+server)
+- Reach out to responsible contact for config changes
